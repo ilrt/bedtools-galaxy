@@ -1,0 +1,54 @@
+<tool id="bedtools_bamtofastq" name="BAM to BED" version="2.18.2.0">
+    <description>converter</description>
+    <requirements>
+        <requirement type="package" version="2.18.2">bedtools2</requirement>
+    </requirements>
+    <version_command>bedtools --version</version_command>
+    <command>
+        bamToFastq
+        #if str($tags):
+          -tags      $output2
+        #end if
+        #if str($output2):
+          -fq2      $output2
+        #end if
+        -i '$input' -fq '$output' 
+    </command>
+    <inputs>
+        <param name="tags" type="text" optional="true" label="Use other NUMERIC BAM alignment tag as the BED score"/>
+    </inputs>
+
+    <outputs>
+        <data format="fastq" name="output" metadata_source="input" label="${input.name} (as FASTQ)"/>
+        <data format="fastq" name="output2" metadata_source="input" label="${input.name} (as FASTQ for second end)"/>
+    </outputs>
+    <help>
+
+**What it does**
+
+This tool converts a BAM file to a FASTQ file.
+
+.. class:: infomark
+
+By default, each alignment in the BAM file is converted to a FASTQ record in the output file. The order of the records in the resulting FASTQ exactly follows the order of the records in the BAM input file.
+
+.. class:: warningmark
+
+If using a custom BAM alignment TAG as  the BED score, note that this must be a numeric tag (e.g., type "i" as in NM:i:0).
+
+.. class:: warningmark
+
+If your BAM alignments are from paired-end sequence data, one can use two outputs to create two distinct FASTQ output files — one for end 1 and one for end 2.
+
+When using this option, it is required that the BAM file is sorted/grouped by the read name. This keeps the resulting records in the two output FASTQ files in the same order. 
+
+------
+
+This tool is part of the `bedtools package`__ from the `Quinlan laboratory`__. If you use this tool, please cite `Quinlan AR, and Hall I.M. BEDTools: A flexible framework for comparing genomic features. Bioinformatics, 2010, 26, 6.`__
+
+    .. __: http://code.google.com/p/bedtools/
+    .. __: http://cphg.virginia.edu/quinlan/
+    .. __: http://bioinformatics.oxfordjournals.org/content/26/6/841.short
+
+    </help>
+</tool>
