@@ -1,4 +1,4 @@
-<tool id="bedtools_bamtofastq" name="BAM to BED" version="2.18.2.0">
+<tool id="bedtools_bamtofastq" name="BAM to FASTQ" version="2.18.2.0">
     <description>converter</description>
     <requirements>
         <requirement type="package" version="2.18.2">bedtools2</requirement>
@@ -7,20 +7,17 @@
     <command>
         bamToFastq
         #if str($tags):
-          -tags      $output2
-        #end if
-        #if str($output2):
-          -fq2      $output2
+          -tags      $tags
         #end if
         -i '$input' -fq '$output' 
     </command>
     <inputs>
+    	<param format="bam" name="input" type="data" label="Source file"/>
         <param name="tags" type="text" optional="true" label="Use other NUMERIC BAM alignment tag as the BED score"/>
     </inputs>
 
     <outputs>
         <data format="fastq" name="output" metadata_source="input" label="${input.name} (as FASTQ)"/>
-        <data format="fastq" name="output2" metadata_source="input" label="${input.name} (as FASTQ for second end)"/>
     </outputs>
     <help>
 
